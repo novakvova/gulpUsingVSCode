@@ -5,6 +5,7 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify");
+var merge = require('merge-stream');
 
 var paths = {
     webroot: "./wwwroot/"
@@ -16,6 +17,17 @@ paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
 paths.concatJsDest = paths.webroot + "js/site.min.js";
 paths.concatCssDest = paths.webroot + "css/site.min.css";
+
+
+var deps = {
+    "jquery": {
+        "dist/*": ""
+    },
+    "axios": {
+        "dist/*": ""
+    }
+};
+
 
 gulp.task("clean:js", function (cb) {
     rimraf(paths.concatJsDest, cb);
@@ -42,3 +54,21 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", gulp.series(["min:js", "min:css"]));
+
+
+gulp.task("cleanlib", function(cb) {
+    return rimraf("wwwroot/lib/", cb);
+});
+
+gulp.task("scripts", function () {
+    var streams = [];
+
+    for (var prop in deps) {
+        console.log("Hello gulp deps: " + prop);
+        for (var itemProp in deps[prop]) {
+            streams.push(gulp.src("node_modules/" + prop + "/" + itemProp)
+                .pipe(gulp.dest("wwwroot/lib/" + prop + "/" + deps[prop][itemProp])));
+        }
+    }
+    return merge(streams);
+});
