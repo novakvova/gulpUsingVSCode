@@ -20,6 +20,13 @@ paths.concatCssDest = paths.webroot + "css/site.min.css";
 
 
 var deps = {
+    "bootstrap": {
+        "dist/js/bootstrap.min.js": "",
+        "dist/css/bootstrap.min.css": ""
+    },
+    "popper.js": {
+        "dist/popper.min.js": ""
+    },
     "jquery": {
         "dist/*": ""
     },

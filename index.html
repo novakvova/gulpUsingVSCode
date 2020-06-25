@@ -3,14 +3,129 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <!--<link href="wwwroot/css/main.css" rel="stylesheet" />
-    <script src="wwwroot/js/main.js"></script>-->
-    <link href="wwwroot/css/site.min.css" rel="stylesheet" />
-    <script src="wwwroot/js/site.min.js"></script>
-    <script src="wwwroot/lib/axios/axios.js"></script>
+    <link href="wwwroot/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="/wwwroot/css/site.min.css" rel="stylesheet" />
+    <!--<script src="/wwwroot/js/site.min.js"></script>-->
 </head>
 <body>
-    <h1>Hello</h1>
-    <div id="content"></div>
+    <div class="container">
+        <h1>Робота з користувачами</h1>
+        <div>
+            <a href="#" id="getAxiosData" class="btn btn-success">
+                Показати через axios
+            </a>
+        </div>
+        <br />
+        <div>
+            <form class="form-inline" id="formCreateUser">
+                <div class="form-group">
+                    <label for="email">Пошта:</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Фото:</label>
+                    <input type="text" class="form-control" id="image">
+                </div>
+
+                <div class="form-group">
+                    <label for="pwd">Роль:</label>
+                    <input type="text" class="form-control" id="role">
+                </div>
+
+                <button type="submit" class="btn btn-warning">Додати</button>
+            </form>
+        </div>
+        <div id="content"></div>
+    </div>
+
+    <script src="/wwwroot/lib/jquery/jquery.min.js"></script>
+    <script src="/wwwroot/lib/popper.js/popper.min.js"></script>
+    <script src="/wwwroot/lib/bootstrap/bootstrap.min.js"></script>
+    <script src="wwwroot/lib/axios/axios.min.js"></script>
+
+    <script>
+        function getUrlUsers() {
+            return "http://localhost:59389/api/users/search";
+        }
+
+        function getContentTableByJSON(data) {
+            let str = `
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Image</th>
+                                  <th scope="col">Email</th>
+                                  <th scope="col">Role</th>
+                                </tr>
+                              </thead>
+                              <tbody>`;
+            data.forEach(function (item) {
+                str += `
+                                    <tr>
+                                      <th>
+                                           <img src="${item.image}" alt="User image" width="150" />
+                                      </th>
+                                      <td>${item.email}</td>
+                                      <td>${item.role}</td>
+                                    </tr>`;
+            });
+            str += `
+                            </tbody>
+                          </table>
+                                    `;
+            return str;
+
+        }
+
+    </script>
+
+    <script>
+        window.addEventListener("load", function () {
+            let getAxiosData = document.getElementById("getAxiosData");
+            let divContent = document.getElementById("content");
+
+            getAxiosData.addEventListener("click", function (e) {
+                e.preventDefault();
+                let url = getUrlUsers();
+                axios.get(url)
+                    .then(
+                        (result) => {
+                            divContent.innerHTML = getContentTableByJSON(result.data);
+                        },
+                        (error) => console.log("error", error)
+                    );
+                return false;
+            });
+        });
+    </script>
+
+    <script>
+        window.addEventListener("load", function () {
+            let form = document.getElementById("formCreateUser");
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                let email = document.getElementById("email");
+                let image = document.getElementById("image");
+                let role = document.getElementById("role");
+                axios.post("http://localhost:59389/api/users/create",
+                    {
+                        email: email.value,
+                        image: image.value,
+                        role: role.value
+                    })
+                    .then((responce) =>
+                        {
+                            alert("Добавлене проскочило");
+                        },
+                        (error) => {
+                            alert("Щось пішло не так");
+                        })
+                //alert("Треба зберегти користувача");
+            });
+
+        });
+    </script>
+
 </body>
 </html>
