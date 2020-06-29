@@ -57,9 +57,10 @@
                                   <th scope="col">Image</th>
                                   <th scope="col">Email</th>
                                   <th scope="col">Role</th>
+                                  <th scope="col">Action</th>
                                 </tr>
                               </thead>
-                              <tbody>`;
+                              <tbody id="listUsers">`;
             data.forEach(function (item) {
                 str += `
                                     <tr>
@@ -68,6 +69,12 @@
                                       </th>
                                       <td>${item.email}</td>
                                       <td>${item.role}</td>
+                                      <td>
+                                        <a href="#" data-id="${item.id}" 
+                                            class="removeUser">
+                                           Видалити
+                                        </a>
+                                      </td>
                                     </tr>`;
             });
             str += `
@@ -115,15 +122,52 @@
                         role: role.value
                     })
                     .then((responce) =>
-                        {
+                    {
+                        var tBodyListUser = document.getElementById("listUsers");
+                        var item = responce.data;
+                        var tr = document.createElement('tr');
+                        tr.innerHTML=                       
+                            `
+                            <th>
+                                <img src="${item.image}" alt="User image" width="150" />
+                            </th>
+                            <td>${item.email}</td>
+                            <td>${item.role}</td>
+                            <td>
+                              <a href="#" data-id="${item.id}" 
+                                  class="removeUser">
+                                 Видалити
+                              </a>
+                            </td>`;
+                        tBodyListUser.appendChild(tr);
+                        console.log("Data add ", responce);
                             alert("Добавлене проскочило");
-                        },
-                        (error) => {
-                            alert("Щось пішло не так");
-                        })
+                    },
+                    (error) => {
+                        alert("Щось пішло не так");
+                    })
                 //alert("Треба зберегти користувача");
             });
 
+        });
+    </script>
+
+    <script>
+        //видалити елемент
+        $(function () {
+            $("#content").on("click", ".removeUser", function () {
+                var id = $(this).attr("data-id");
+                var tr = $(this).closest("tr");//tr
+                axios.delete(`http://localhost:59389/api/users/delete/${id}`)
+                    .then(
+                        (responce) => {
+                            //console.log("good delete");
+                            tr.remove();
+                        },
+                        (error) => { alert("Щось пішло не так!"); }
+                    );
+                //alert("ви хочете видалити користувача? " + id);
+            });
         });
     </script>
 
