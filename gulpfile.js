@@ -32,6 +32,9 @@ var deps = {
     },
     "axios": {
         "dist/*": ""
+    },
+    "dropzone": {
+        "dist/min/*": ""
     }
 };
 

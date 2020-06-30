@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title></title>
     <link href="wwwroot/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="wwwroot/lib/dropzone/dropzone.min.css" rel="stylesheet" />
 
     <link href="/wwwroot/css/site.min.css" rel="stylesheet" />
     <!--<script src="/wwwroot/js/site.min.js"></script>-->
@@ -11,19 +12,28 @@
 <body>
     <div class="container">
         <h1>Робота з користувачами</h1>
+        <a href="/fileUploader.html" class="btn btn-warning">
+            Загрузка файлів
+        </a>
+
         <div>
             <a href="#" id="getAxiosData" class="btn btn-success">
                 Показати через axios
             </a>
         </div>
         <br />
-        <div>
+        <div class="row">
+            <div class="col-md-3">
+                <form action="http://localhost:59389/api/users/uploader" class="dropzone" id="dropzonewidget">
+                </form>
+            </div>
             <form class="form-inline" id="formCreateUser">
                 <div class="form-group">
                     <label for="email">Пошта:</label>
                     <input type="email" class="form-control" id="email">
                 </div>
                 <div class="form-group">
+                    <!---->
                     <label for="pwd">Фото:</label>
                     <input type="text" class="form-control" id="image">
                 </div>
@@ -35,6 +45,7 @@
 
                 <button type="submit" class="btn btn-warning">Додати</button>
             </form>
+
         </div>
         <div id="content"></div>
     </div>
@@ -43,6 +54,9 @@
     <script src="/wwwroot/lib/popper.js/popper.min.js"></script>
     <script src="/wwwroot/lib/bootstrap/bootstrap.min.js"></script>
     <script src="wwwroot/lib/axios/axios.min.js"></script>
+    <script src="wwwroot/lib/dropzone/dropzone.min.js"></script>
+    <script src="wwwroot/js/userdropzone.js"></script>
+
 
     <script>
         function getUrlUsers() {
@@ -51,36 +65,36 @@
 
         function getContentTableByJSON(data) {
             let str = `
-                            <table class="table">
-                              <thead>
-                                <tr>
-                                  <th scope="col">Image</th>
-                                  <th scope="col">Email</th>
-                                  <th scope="col">Role</th>
-                                  <th scope="col">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody id="listUsers">`;
+                                    <table class="table">
+                                      <thead>
+                                        <tr>
+                                          <th scope="col">Image</th>
+                                          <th scope="col">Email</th>
+                                          <th scope="col">Role</th>
+                                          <th scope="col">Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody id="listUsers">`;
             data.forEach(function (item) {
                 str += `
-                                    <tr>
-                                      <th>
-                                           <img src="${item.image}" alt="User image" width="150" />
-                                      </th>
-                                      <td>${item.email}</td>
-                                      <td>${item.role}</td>
-                                      <td>
-                                        <a href="#" data-id="${item.id}" 
-                                            class="removeUser">
-                                           Видалити
-                                        </a>
-                                      </td>
-                                    </tr>`;
+                                            <tr>
+                                              <th>
+                                                   <img src="${item.image}" alt="User image" width="150" />
+                                              </th>
+                                              <td>${item.email}</td>
+                                              <td>${item.role}</td>
+                                              <td>
+                                                <a href="#" data-id="${item.id}"
+                                                    class="removeUser">
+                                                   Видалити
+                                                </a>
+                                              </td>
+                                            </tr>`;
             });
             str += `
-                            </tbody>
-                          </table>
-                                    `;
+                                    </tbody>
+                                  </table>
+                                            `;
             return str;
 
         }
@@ -121,31 +135,30 @@
                         image: image.value,
                         role: role.value
                     })
-                    .then((responce) =>
-                    {
+                    .then((responce) => {
                         var tBodyListUser = document.getElementById("listUsers");
                         var item = responce.data;
                         var tr = document.createElement('tr');
-                        tr.innerHTML=                       
+                        tr.innerHTML =
                             `
-                            <th>
-                                <img src="${item.image}" alt="User image" width="150" />
-                            </th>
-                            <td>${item.email}</td>
-                            <td>${item.role}</td>
-                            <td>
-                              <a href="#" data-id="${item.id}" 
-                                  class="removeUser">
-                                 Видалити
-                              </a>
-                            </td>`;
+                                    <th>
+                                        <img src="${item.image}" alt="User image" width="150" />
+                                    </th>
+                                    <td>${item.email}</td>
+                                    <td>${item.role}</td>
+                                    <td>
+                                      <a href="#" data-id="${item.id}"
+                                          class="removeUser">
+                                         Видалити
+                                      </a>
+                                    </td>`;
                         tBodyListUser.appendChild(tr);
                         console.log("Data add ", responce);
-                            alert("Добавлене проскочило");
+                        alert("Добавлене проскочило");
                     },
-                    (error) => {
-                        alert("Щось пішло не так");
-                    })
+                        (error) => {
+                            alert("Щось пішло не так");
+                        })
                 //alert("Треба зберегти користувача");
             });
 
