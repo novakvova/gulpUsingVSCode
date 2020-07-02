@@ -24,7 +24,7 @@
         <br />
         <div class="row">
             <div class="col-md-3">
-                <form action="http://localhost:59389/api/users/uploader" class="dropzone" id="dropzonewidget">
+                <form action="http://hello.somee.com/api/users/uploader" class="dropzone" id="dropzonewidget">
                 </form>
             </div>
             <form class="form-inline" id="formCreateUser">
@@ -60,7 +60,7 @@
 
     <script>
         function getUrlUsers() {
-            return "http://localhost:59389/api/users/search";
+            return "http://hello.somee.com/api/users/search";
         }
 
         function getContentTableByJSON(data) {
@@ -129,7 +129,7 @@
                 let email = document.getElementById("email");
                 let image = document.getElementById("image");
                 let role = document.getElementById("role");
-                axios.post("http://localhost:59389/api/users/create",
+                axios.post("http://hello.somee.com/api/users/create",
                     {
                         email: email.value,
                         image: image.value,
@@ -171,7 +171,7 @@
             $("#content").on("click", ".removeUser", function () {
                 var id = $(this).attr("data-id");
                 var tr = $(this).closest("tr");//tr
-                axios.delete(`http://localhost:59389/api/users/delete/${id}`)
+                axios.delete(`http://hello.somee.com/api/users/delete/${id}`)
                     .then(
                         (responce) => {
                             //console.log("good delete");

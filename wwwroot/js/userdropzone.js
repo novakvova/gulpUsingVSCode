@@ -27,7 +27,7 @@ $(".dropzone").dropzone({
 
         this.on("success", function (file, response) {
             file.id = response.id;  //Зберігаємо назву файла на сервері
-            $("#image").val(`http://localhost:59389/images/${response.id}`);
+            $("#image").val(`http://hello.somee.com/images/${response.id}`);
             console.log("Object hello", file.id);
         });
 
@@ -37,7 +37,7 @@ $(".dropzone").dropzone({
         //console.log("remove file name", file.id);
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:59389/api/users/removefile',
+            url: 'http://hello.somee.com/api/users/removefile',
             data: { name: file.id, request: 2 },
             sucess: function (data) {
                 console.log('success: ' + data);
