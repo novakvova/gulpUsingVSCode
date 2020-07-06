@@ -23,20 +23,22 @@
         </div>
         <br />
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <form class="dropzone" id="dropzonewidget">
                 </form>
             </div>
-            <form class="form-inline" id="formCreateUser">
+            <form class="form-inline col-md-8" id="formCreateUser">
                 <div class="form-group">
                     <label for="email">Пошта:</label>
                     <input type="email" class="form-control" id="email">
                 </div>
-                <div class="form-group">
-                    <!---->
+
+                <!--<div class="form-group">
                     <label for="pwd">Фото:</label>
                     <input type="text" class="form-control" id="image">
-                </div>
+                </div>-->
+
+                <input type="hidden" id="image">
 
                 <div class="form-group">
                     <label for="pwd">Роль:</label>
@@ -92,6 +94,10 @@
                                               <td>${item.email}</td>
                                               <td>${item.role}</td>
                                               <td>
+                                      <a href="#" data-id="${item.id}"
+                                          class="editUser">
+                                         Редагувати
+                                       </a>
                                                 <a href="#" data-id="${item.id}"
                                                     class="removeUser">
                                                    Видалити
@@ -156,10 +162,16 @@
                                     <td>${item.email}</td>
                                     <td>${item.role}</td>
                                     <td>
-                                      <a href="#" data-id="${item.id}"
+
+                                        <a href="#" data-id="${item.id}"
+                                          class="editUser">
+                                         Редагувати
+                                       </a>
+                                        <a href="#" data-id="${item.id}"
                                           class="removeUser">
                                          Видалити
                                       </a>
+
                                     </td>`;
                         tBodyListUser.appendChild(tr);
                         console.log("Data add ", responce);

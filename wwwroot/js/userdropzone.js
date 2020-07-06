@@ -27,7 +27,7 @@ $(".dropzone").dropzone({
 
         this.on("success", function (file, response) {
             file.id = response.id;  //Зберігаємо назву файла на сервері
-            $("#image").val(`${urlSite}images/${response.id}`);
+            $("#image").val(`${response.id}`);
             console.log("Object hello", file.id);
         });
 
