@@ -32,7 +32,7 @@
 <body>
     <div class="container">
         <h1>Загрузка файлів</h1>
-
+        <button class="btn btn-danger" id="clearDropZone">Clear Images</button>
         <div class="row">
             <div class="col-md-3">
                 <form action="http://localhost:59389/api/users/uploader" class="dropzone" id="dropzonewidget">
@@ -46,6 +46,15 @@
     <script src="/wwwroot/lib/bootstrap/bootstrap.min.js"></script>
     <script src="wwwroot/lib/dropzone/dropzone.min.js"></script>
     <script src="wwwroot/js/userdropzone.js"></script>
+
+    <script>
+        $(function () {
+            $("#clearDropZone").on("click", function () {
+                //alert("Hello");
+                Dropzone.forElement('#dropzonewidget').removeAllFiles(true)
+            });
+        });
+    </script>
 
 </body>
 </html>

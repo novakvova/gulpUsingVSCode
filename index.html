@@ -24,7 +24,7 @@
         <br />
         <div class="row">
             <div class="col-md-3">
-                <form action="http://hello.somee.com/api/users/uploader" class="dropzone" id="dropzonewidget">
+                <form class="dropzone" id="dropzonewidget">
                 </form>
             </div>
             <form class="form-inline" id="formCreateUser">
@@ -55,12 +55,20 @@
     <script src="/wwwroot/lib/bootstrap/bootstrap.min.js"></script>
     <script src="wwwroot/lib/axios/axios.min.js"></script>
     <script src="wwwroot/lib/dropzone/dropzone.min.js"></script>
+    <script>
+        //var urlSite = "http://hello.somee.com/";
+        var urlSite = "http://localhost:59389/";
+        $("#dropzonewidget").attr("action", `${urlSite}api/users/uploader`);
+        var clearFormControls = false; //очищеня інпутів
+    </script>
+
     <script src="wwwroot/js/userdropzone.js"></script>
 
 
     <script>
+        
         function getUrlUsers() {
-            return "http://hello.somee.com/api/users/search";
+            return `${urlSite}api/users/search`;
         }
 
         function getContentTableByJSON(data) {
@@ -129,7 +137,8 @@
                 let email = document.getElementById("email");
                 let image = document.getElementById("image");
                 let role = document.getElementById("role");
-                axios.post("http://hello.somee.com/api/users/create",
+
+                axios.post(`${urlSite}api/users/create`,
                     {
                         email: email.value,
                         image: image.value,
@@ -155,6 +164,13 @@
                         tBodyListUser.appendChild(tr);
                         console.log("Data add ", responce);
                         alert("Добавлене проскочило");
+                        clearFormControls = true;
+                        email.value = "";
+                        image.value = "";
+                        role.value = "";
+                        Dropzone.forElement('#dropzonewidget').removeAllFiles(true);
+                        clearFormControls = false;
+
                     },
                         (error) => {
                             alert("Щось пішло не так");
@@ -171,7 +187,7 @@
             $("#content").on("click", ".removeUser", function () {
                 var id = $(this).attr("data-id");
                 var tr = $(this).closest("tr");//tr
-                axios.delete(`http://hello.somee.com/api/users/delete/${id}`)
+                axios.delete(`${urlSite}api/users/delete/${id}`)
                     .then(
                         (responce) => {
                             //console.log("good delete");

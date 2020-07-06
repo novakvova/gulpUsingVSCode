@@ -27,22 +27,25 @@ $(".dropzone").dropzone({
 
         this.on("success", function (file, response) {
             file.id = response.id;  //Зберігаємо назву файла на сервері
-            $("#image").val(`http://hello.somee.com/images/${response.id}`);
+            $("#image").val(`${urlSite}images/${response.id}`);
             console.log("Object hello", file.id);
         });
 
     },
     removedfile: function (file) {
+        
         var name = file.name;
-        //console.log("remove file name", file.id);
-        $.ajax({
-            type: 'POST',
-            url: 'http://hello.somee.com/api/users/removefile',
-            data: { name: file.id, request: 2 },
-            sucess: function (data) {
-                console.log('success: ' + data);
-            }
-        });
+        if (!clearFormControls) {  //якщо не проводиться процедура очищення інпутів
+            //console.log("remove file name", file.id);
+            $.ajax({
+                type: 'POST',
+                url: `${urlSite}api/users/removefile`,
+                data: { name: file.id, request: 2 },
+                sucess: function (data) {
+                    console.log('success: ' + data);
+                }
+            });
+        }
         var _ref;
         return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
     }
