@@ -34,9 +34,9 @@
                 </div>
 
                 <!--<div class="form-group">
-                    <label for="pwd">Фото:</label>
-                    <input type="text" class="form-control" id="image">
-                </div>-->
+                <label for="pwd">Фото:</label>
+                <input type="text" class="form-control" id="image">
+            </div>-->
 
                 <input type="hidden" id="image">
 
@@ -50,6 +50,33 @@
 
         </div>
         <div id="content"></div>
+
+
+        <div class="modal" tabindex="-1" role="dialog" id="editUserModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Редагування користувача</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="emailEditModel">Електронна пошта</label>
+                                <input type="email" class="form-control" id="emailEditModel" placeholder="Enter email">
+                            </div>
+                            
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="/wwwroot/lib/jquery/jquery.min.js"></script>
@@ -208,6 +235,21 @@
                         (error) => { alert("Щось пішло не так!"); }
                     );
                 //alert("ви хочете видалити користувача? " + id);
+            });
+
+            $("#content").on("click", ".editUser", function () {
+                var id = $(this).attr("data-id");
+                alert("Hello: " + id);
+                axios.get(`${urlSite}api/users/edit/${id}`)
+                    .then(
+                        (responce) => {
+                            $("#emailEditModel").val(responce.data.email);
+                            $('#editUserModal').modal('toggle');
+                            //console.log("good delete");
+                            tr.remove();
+                        },
+                        (error) => { alert("Щось пішло не так!"); }
+                    );
             });
         });
     </script>
